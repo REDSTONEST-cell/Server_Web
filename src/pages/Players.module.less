@@ -1,0 +1,221 @@
+    .players {
+        width: 100%;
+        height: 100%;
+        background-color: rgb(105, 166, 235);
+        background-size: cover;
+        background-position: center;
+        position: relative;
+        overflow-x: hidden;
+        overflow-y: auto;
+        scrollbar-width: none;
+
+        &::-webkit-scrollbar {
+            display: none;
+        }
+
+        // 背景遮罩，保证文字可读（在 Players.tsx 中和背景图叠加）
+        --overlay: linear-gradient(90deg, rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.25) 60%, rgba(0, 0, 0, 0.45));
+
+        .inner {
+            position: relative;
+            z-index: 1;
+            min-height: 100%;
+            max-width: 75rem;
+            margin: 0 auto;
+            padding: calc(var(--nav-h) + 2rem) 4rem 2.5rem;
+            display: flex;
+            flex-wrap: nowrap;
+            align-items: center;
+            justify-content: space-between;
+            gap: 3rem;
+        }
+
+        .title {
+            margin: 0 0 1.5rem;
+            font-weight: normal;
+            font-size: 2.6rem;
+            letter-spacing: 0.15rem;
+            color: #fff;
+            text-shadow: 0.2rem 0.2rem 0 rgba(0, 0, 0, 0.6);
+
+            span {
+                display: block;
+                font-size: 0.95rem;
+                letter-spacing: 0.3rem;
+                color: var(--rve-green);
+                text-shadow: none;
+            }
+        }
+
+        .left-op-list {
+            ul {
+                width: 26rem;
+                list-style: none;
+                margin: 0;
+                padding: 0;
+                display: grid;
+                grid-template-columns: repeat(3, 1fr);
+                gap: 1.5rem 1rem;
+                text-align: center;
+
+                li {
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    gap: 0.2rem;
+
+                    &:hover .avatar {
+                        transform: translateY(-0.4rem);
+                        border-color: var(--rve-green);
+                    }
+
+                    span {
+                        white-space: nowrap;
+                        color: #fff;
+                        letter-spacing: 0.1rem;
+                        text-shadow: 0.12rem 0.12rem 0 rgba(0, 0, 0, 0.7);
+                    }
+                }
+            }
+
+            .avatar {
+                width: 6rem;
+                height: 6rem;
+                margin-bottom: 0.4rem;
+                padding: 0.3rem;
+                background-color: rgba(0, 0, 0, 0.35);
+                border: 0.18rem solid rgba(0, 0, 0, 0.8);
+                box-shadow: inset 0 0 0 0.15rem rgba(255, 255, 255, 0.15), 0.3rem 0.3rem 0 rgba(0, 0, 0, 0.4);
+                transition: transform .2s, border-color .2s;
+
+                img {
+                    width: 100%;
+                    height: 100%;
+                    object-fit: cover;
+                }
+
+                // 还没有头像时的占位
+                .placeholder {
+                    width: 100%;
+                    height: 100%;
+                    display: grid;
+                    place-items: center;
+                    font-size: 2.6rem;
+                    color: rgba(255, 255, 255, 0.55);
+                    background-color: rgba(255, 255, 255, 0.08);
+                }
+            }
+
+            .player-title {
+                font-size: 1.15rem;
+            }
+
+            .player-name {
+                font-size: 0.9rem;
+                opacity: 0.75;
+            }
+        }
+
+        // 白色对话框，和左下角的角色呼应
+        .right-message {
+            min-width: 20rem;
+            max-width: 30rem;
+            position: relative;
+            background-color: #fff;
+            color: #222;
+            border: 0.2rem solid #000;
+            box-shadow: inset -0.25rem -0.3rem 0 #d4d4d4, 0.6rem 0.6rem 0 rgba(0, 0, 0, 0.35);
+            padding: 1.2rem 1.5rem 1.4rem;
+
+            h3 {
+                margin: 0 0 0.6rem;
+                font-weight: normal;
+                font-size: 1.6rem;
+                color: var(--rve-green-dark);
+            }
+
+            p {
+                margin: 0.5rem 0 0;
+                word-break: break-all;
+                font-size: 1.15rem;
+                line-height: 1.9rem;
+                letter-spacing: 0.08rem;
+            }
+        }
+
+        .sh {
+            width: var(--mascot-w);
+            position: absolute;
+            z-index: 1;
+            bottom: 0;
+            left: 1rem;
+            pointer-events: none;
+
+            img {
+                display: block;
+                width: 100%;
+                height: auto;
+            }
+        }
+    }
+
+    // 宽屏显示左下角立绘，并给它让出位置，避免挡住头像
+    @media screen and (min-width: 1200px) {
+        .players {
+            --mascot-w: 12rem;
+
+            .inner {
+                // 内容左边缘至少在立绘右侧 2rem 处；屏幕足够宽时保持居中
+                padding-left: max(4rem, calc(var(--mascot-w) + 3rem - max(0px, (100vw - 75rem) / 2)));
+            }
+        }
+    }
+
+    @media screen and (max-width: 1199px) {
+        .players .sh {
+            display: none;
+        }
+    }
+
+    @media screen and (min-width: 1200px) and (max-height: 640px) {
+        .players .sh {
+            display: none;
+        }
+    }
+
+    @media screen and (max-width: 899px) {
+        .players {
+            --overlay: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5));
+
+            .inner {
+                flex-direction: column;
+                justify-content: center;
+                gap: 2rem;
+                padding: calc(var(--nav-h) + 1.5rem) 1.2rem 2rem;
+            }
+
+            .left-op-list {
+                width: 100%;
+
+                .title {
+                    text-align: center;
+                }
+
+                ul {
+                    width: 100%;
+                    max-width: 26rem;
+                    margin: 0 auto;
+                }
+
+                .avatar {
+                    width: 5rem;
+                    height: 5rem;
+                }
+            }
+
+            .right-message {
+                min-width: 0;
+                width: 100%;
+            }
+        }
+    }
